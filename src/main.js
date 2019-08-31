@@ -15,6 +15,12 @@ import router from './router'
 import '@/icons' // icon
 import '@/permission' // permission control
 
+const filters = require('@/filter')
+
+Object.keys(filters).forEach(key => {
+  Vue.filter(key, filters[key])
+})
+
 import { quillEditor } from 'vue-quill-editor' 
 
 
