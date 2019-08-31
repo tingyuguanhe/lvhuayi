@@ -1,93 +1,125 @@
 <template>
   <div class="edit_notice">
-    <el-tabs v-model="activeName" @tab-click="handleClick(activeName)">
-      <el-tab-pane label="英文公告" name="en"></el-tab-pane>
-      <el-tab-pane label="中文公告" name="zh-CN"></el-tab-pane>
-    </el-tabs>
-
-    <!-- 英文公告 -->
-    <el-form
-      :model="ruleForm"
-      :rules="rules"
-      ref="ruleForm"
-      label-width="80px"
-      class="demo-ruleForm"
-      v-if="activeName == 'en'"
-    >
-      <el-form-item label="英文标题" prop="name">
-        <el-input v-model="ruleForm.title"></el-input>
-      </el-form-item>
-      <el-form-item label="公告头图" prop="name">
-        <el-upload
-          class="avatar-uploader"
-          action="/api/upload/"
-          :show-file-list="false"
-          :on-success="handleEnPicSuccess"
-          :before-upload="beforeEnPicUpload"
-        >
-          <img v-if="ruleForm.imageEng" :src="ruleForm.imageEng" class="avatar" />
-          <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-        </el-upload>
-      </el-form-item>
-      <el-form-item label="生效时间" prop="name">
-        <el-input v-model="ruleForm.title"></el-input>
-      </el-form-item>
-      <el-form-item label="内容编辑" prop="content">
-        <Tinymce ref="editor" v-model="ruleForm.contentEng" :height="400" />
-       
-      </el-form-item>
-      <el-form-item>
-        <el-button type="warning">预览</el-button>
-        <el-button type="primary">保存</el-button>
-        <el-button type="default">取消</el-button>
-      </el-form-item>
-    </el-form>
-
-    <el-form
-      :model="ruleForm"
-      :rules="rules"
-      ref="ruleForm"
-      label-width="80px"
-      class="demo-ruleForm"
-      v-else
-    >
-      <el-form-item label="中文标题" prop="name">
-        <el-input v-model="ruleForm.title"></el-input>
-      </el-form-item>
-      <el-form-item label="公告头图" prop="name">
-        <el-upload
-          action="/api/upload/"
-          list-type="picture-card"
-          :limit="1"
-          :on-preview="handlePictureCardPreview"
-          :on-remove="handleRemove"
-        >
-          <i class="el-icon-plus"></i>
-        </el-upload>
-        <el-dialog :visible.sync="dialogVisible">
-          <img width="100%" :src="ruleForm.image" alt />
-        </el-dialog>
-      </el-form-item>
-      <el-form-item label="生效时间" prop="name">
-        <el-input v-model="ruleForm.title"></el-input>
-      </el-form-item>
-      <el-form-item label="内容编辑" prop="name">
-        <div class="editor-container">
-          <Tinymce ref="editor" v-model="ruleForm.contentEng" :height="400" />
+    <el-row :gutter="20">
+      <el-col :span="15">
+        <div class="grid-content bg-purple">
+          <el-tabs v-model="activeName" @tab-click="handleClick(activeName)">
+            <el-tab-pane label="英文公告" name="en"></el-tab-pane>
+            <el-tab-pane label="中文公告" name="zh-CN"></el-tab-pane>
+          </el-tabs>
+          <!-- 英文公告 -->
+          <el-form
+            key="en"
+            :model="ruleForm"
+            :rules="rules"
+            ref="ruleForm"
+            label-width="80px"
+            class="demo-ruleForm"
+          >
+            <div v-show="activeName == 'en'">
+              <el-form-item label="英文标题" prop="titleEng">
+                <el-input v-model="ruleForm.titleEng"></el-input>
+              </el-form-item>
+              <el-form-item label="公告头图" prop="imageEng">
+                <el-upload
+                  key="en"
+                  class="avatar-uploader"
+                  :action="domain"
+                  :data="enQiniuData"
+                  :on-error="uploadErrorEn"
+                  :on-success="uploadSuccessEn"
+                  :before-upload="beforeUpload"
+                  :show-file-list="false"
+                >
+                  <img v-if="ruleForm.imageEng" :src="ruleForm.imageEng" class="avatar" />
+                  <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+                </el-upload>
+              </el-form-item>
+              <el-form-item label="生效时间" prop="date">
+                <el-date-picker
+                  key="en"
+                  size="small"
+                  v-model="ruleForm.date"
+                  value-format="timestamp"
+                  type="datetimerange"
+                  align="right"
+                  start-placeholder="开始日期"
+                  end-placeholder="结束日期"
+                  :default-time="['12:00:00', '08:00:00']"
+                ></el-date-picker>
+              </el-form-item>
+              <el-form-item label="内容编辑" prop="contentEng">
+                <Tinymce ref="editor" v-model="ruleForm.contentEng" :height="200" />
+              </el-form-item>
+            </div>
+            <div v-show="activeName == 'zh-CN'">
+              <el-form-item label="中文标题" prop="title">
+                <el-input v-model="ruleForm.title"></el-input>
+              </el-form-item>
+              <el-form-item label="公告头图" prop="image">
+                <el-upload
+                  key="zhcn"
+                  class="avatar-uploader"
+                  :action="domain"
+                  :data="zhCnQiniuData"
+                  :on-error="uploadError"
+                  :on-success="uploadSuccess"
+                  :before-upload="beforeUpload"
+                  :show-file-list="false"
+                >
+                  <img v-if="ruleForm.image" :src="ruleForm.image" class="avatar" />
+                  <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+                </el-upload>
+              </el-form-item>
+              <el-form-item label="生效时间" prop="date">
+                <el-date-picker
+                  key="zhcn"
+                  size="small"
+                  v-model="ruleForm.date"
+                  value-format="timestamp"
+                  type="datetimerange"
+                  align="right"
+                  start-placeholder="开始日期"
+                  end-placeholder="结束日期"
+                  :default-time="['12:00:00', '08:00:00']"
+                ></el-date-picker>
+              </el-form-item>
+              <el-form-item label="内容编辑" prop="content">
+                <div class="editor-container">
+                  <Tinymce ref="editor" v-model="ruleForm.content" :height="200" />
+                </div>
+              </el-form-item>
+            </div>
+            <el-form-item>
+              <el-button type="warning">预览</el-button>
+              <el-button type="primary" @click="submitForm('ruleForm')">保存</el-button>
+              <el-button type="default">取消</el-button>
+            </el-form-item>
+          </el-form>
         </div>
-
-      </el-form-item>
-    </el-form>
+      </el-col>
+      <el-col :span="8">
+        <div class="grid-content bg-purple">
+          
+          <div class="pre_view_wrap">
+            <h4>预览区</h4>
+            <div v-if="activeName == 'en'" class="pre_view" v-html="ruleForm.contentEng"></div>
+              <div v-else class="pre_view" v-html="ruleForm.content"></div>
+             
+          </div>
+          
+        </div>
+      </el-col>
+    </el-row>
   </div>
 </template>    
 
 <script>
-import * as NoticeApi from '@/api/notice'
-import Tinymce from '@/components/Tinymce'
-
+import * as NoticeApi from "@/api/notice";
+import Tinymce from "@/components/Tinymce";
 
 export default {
-  components:{Tinymce},
+  components: { Tinymce },
   data() {
     return {
       activeName: "en",
@@ -98,40 +130,104 @@ export default {
         titleEng: "",
         image: "",
         imageEng: "",
-        content: "新建公告测试10",
-        contentEng: "new notice test 10"
+        content: "",
+        contentEng: "",
+        date: "",
+        startTime: "",
+        endTime: ""
       },
-      rules: {},
+      zhCnQiniuData: {
+        key: "", //图片名字处理
+        token: this.QiniuInfos.token //七牛云token
+      },
+      enQiniuData: {
+        key: "", //图片名字处理
+        token: this.QiniuInfos.token //七牛云token
+      },
+      rules: {
+        title: [{ required: true, message: "请输入标题", trigger: "blur" }],
+        titleEng: [{ required: true, message: "请输入标题", trigger: "blur" }],
+        image: [{ required: true, message: "请上传图片", trigger: "change" }],
+        imageEng: [
+          { required: true, message: "请上传图片", trigger: "change" }
+        ],
+        content: [{ required: true, message: "请输入内容", trigger: "change" }],
+        date: [{ required: true, message: "请选择时间", trigger: "change" }],
+        content: [{ required: true, message: "请输入内容", trigger: "change" }],
+        contentEng: [
+          { required: true, message: "请输入内容", trigger: "change" }
+        ]
+      },
+      qiniuaddr: "", //图片上传的地址
       dialogVisible: false,
-      dialogImageUrl: ""
+      dialogImageUrl: "",
+
+      domain: "https://up-z1.qiniup.com", // 七牛云的上传地址（华南区）
+      qiniuaddr: "http://xxxx.com" // 七牛云的图片外链地址
     };
   },
-  mounted(){
-    
+  mounted() {
+    this.qiniuaddr = this.QiniuInfos.baseUrl;
   },
   methods: {
-    onEditorReady(editor) {
-      },
+    onEditorReady(editor) {},
     handleClick(name) {
       this.activeName = name;
     },
-    handleEnPicSuccess(res, file) {
-      this.ruleForm.imageEng = URL.createObjectURL(file.raw);
+
+    beforeUpload(file) {
+      this.beforeAvatarUpload(file);
     },
-    beforeEnPicUpload() {
-      const isJPG = file.type === "image/jpeg";
+    beforeAvatarUpload(file) {
+      const isPNG = file.type === "image/png";
+      const isJPEG = file.type === "image/jpeg";
+      const isJPG = file.type === "image/jpg";
       const isLt2M = file.size / 1024 / 1024 < 2;
 
-      if (!isJPG) {
-        this.$message.error("上传头像图片只能是 JPG 格式!");
+      if (!isPNG && !isJPEG && !isJPG) {
+        this.$message.error("上传头像图片只能是 jpg、png、jpeg 格式!");
+        return false;
       }
       if (!isLt2M) {
         this.$message.error("上传头像图片大小不能超过 2MB!");
+        return false;
       }
-      return isJPG && isLt2M;
+      if (this.activeName === "en") {
+        this.enQiniuData.key = `en_upload_pic_${file.name}`;
+      } else {
+        this.zhCnQiniuData.key = `zh-cn_upload_pic_${file.name}`;
+      }
     },
-    handlePictureCardPreview() {},
-    handleRemove() {}
+    uploadSuccessEn(response, file, fileList) {
+      this.ruleForm.imageEng = `${this.qiniuaddr}/${response.key}`;
+    },
+    uploadSuccess(response, file, fileList) {
+      this.ruleForm.image = `${this.qiniuaddr}/${response.key}`;
+    },
+    uploadErrorEn(err, file, fileList) {
+      this.$message.error("上传出错，请重试！");
+    },
+    uploadError(err, file, fileList) {
+      this.$message.error("上传出错，请重试！");
+    },
+    submitForm(formName) {
+      this.$refs[formName].validate(async valid => {
+        if (valid) {
+          this.ruleForm.startTime = this.ruleForm.date[0];
+          this.ruleForm.endTime = this.ruleForm.date[1];
+   
+          let res = await NoticeApi.createNotice(this.ruleForm);
+          
+          if (res.code == 200) {
+            this.$message.success("创建成功");
+            this.$router.go(-1);
+          }
+        } else {
+          this.$message.error("请检查中英文是否填写完整");
+          return false;
+        }
+      });
+    }
   }
 };
 </script>  

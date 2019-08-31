@@ -34,7 +34,9 @@ import { quillEditor } from 'vue-quill-editor'
 // set ElementUI lang to EN
 Vue.use(ElementUI, { locale })
 
-Vue.config.productionTip = false
+Vue.config.productionTip = false;
+
+Vue.prototype.qiniuDomain = "https://upload-z2.qiniup.com"  //七牛云地址
 
 new Vue({
   el: '#app',

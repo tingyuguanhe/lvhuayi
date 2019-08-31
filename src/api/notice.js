@@ -8,6 +8,7 @@ export function getList(data) {
     })
   }
 
+  //创建
   export function createNotice(data) {
     return request({
       url: '/api/lvhuayi/admin/notices/create',
@@ -15,5 +16,13 @@ export function getList(data) {
       data
     })
   }
- 
+
+  //列表
+  export function getNoticeList(data) {
+    return request({
+      url: '/api/lvhuayi/admin/notices/list',
+      method: 'post',
+      data
+    })
+  }
   

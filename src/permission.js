@@ -1,3 +1,4 @@
+import Vue from 'vue'
 import router from './router'
 import store from './store'
 import { Message } from 'element-ui'
@@ -13,6 +14,14 @@ const whiteList = ['/login'] // no redirect whitelist
 router.beforeEach(async(to, from, next) => {
   // start progress bar
   NProgress.start()
+  // console.log('---qiniuToken--',JSON.parse(localStorage.getItem("qiniuToken")));
+  let QiNIuInfo = JSON.parse(localStorage.getItem("qiniuToken"));
+  if(!QiNIuInfo || QiNIuInfo.token){
+    store.dispatch('user/getMediasData');
+  }
+  Vue.prototype.QiniuInfos = QiNIuInfo;
+   
+  
 
   // set page title
   document.title = getPageTitle(to.meta.title)

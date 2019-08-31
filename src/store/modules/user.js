@@ -1,6 +1,7 @@
 import { login, logout, getInfo } from '@/api/user'
-import { getToken, setToken } from '@/utils/auth'
+import { getToken } from '@/utils/auth'
 import { resetRouter } from '@/router'
+import { getMultiMedias,getAllUesrs } from '@/api/common'
 
 const state = {
   token: getToken(),
@@ -28,7 +29,6 @@ const actions = {
     return new Promise((resolve, reject) => {
       login({ username: username.trim(), password: password }).then(response => {
        
-        console.log('-----',response.data);
         commit('SET_TOKEN', response.data)
         localStorage.setItem('userToken', response.data);
        
@@ -78,6 +78,26 @@ const actions = {
     return new Promise(resolve => {
       localStorage.removeItem('userToken');
       resolve()
+    })
+  },
+  getMediasData({commit, state}) {
+    return new Promise((resolve, reject) => {
+      getMultiMedias().then((response) => {
+        
+        localStorage.setItem("qiniuToken", JSON.stringify(response.data));
+      }).catch(error => {
+        reject(error)
+      })
+    })
+
+  },
+  getAllUesrsData(){
+    return new Promise((resolve, reject) => {
+      getAllUesrs().then((response) => {
+        resolve(response)
+      }).catch(error => {
+        reject(error)
+      })
     })
   }
 }

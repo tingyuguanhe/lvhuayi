@@ -36,3 +36,21 @@
     height: 178px;
     display: block;
   }
+
+  // 预览区域
+  .pre_view{
+     border:1px solid #ccc;
+     width: 375px;
+     height: 540px;
+     overflow-y: auto; 
+     
+  }
+  .pre_view p{
+    padding: 20px;
+    margin: 0;
+   }
+  .pre_view_wrap h4{
+     text-align: center;
+     font-weight: normal;
+     margin-bottom: 10px;
+  }

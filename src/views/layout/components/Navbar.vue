@@ -43,7 +43,7 @@ export default {
       this.$store.dispatch('ToggleSideBar')
     },
     logout() {
-      localStorage.clear();
+      localStorage.removeItem("userToken");
       this.$router.push({ path: '/login'});
       // this.$store.dispatch('LogOut').then(() => {
       //   this.$router.push({ path: '/login'})
