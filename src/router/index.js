@@ -50,6 +50,13 @@ export const constantRouterMap = [
       },
       {
         path: 'edit',
+        name: 'createNotice',
+        hidden: true,
+        component: () => import('@/views/noticeManage/edit'),
+        meta: { title: '新建公告', icon: 'form' }
+      },
+      {
+        path: 'edit/:id',
         name: 'editNotice',
         hidden: true,
         component: () => import('@/views/noticeManage/edit'),

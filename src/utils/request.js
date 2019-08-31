@@ -15,6 +15,7 @@ service.interceptors.request.use(
   config => {
     // do something before request is sent
     if (localStorage.getItem("userToken")) {
+      config.headers['Content-Type'] = "application/json"
       config.headers['Authorization'] = 'Bearer ' + localStorage.getItem("userToken") 
     }
     return config

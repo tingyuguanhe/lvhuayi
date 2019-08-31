@@ -1,4 +1,3 @@
-
 /**
  * Parse the time to string
  * @param {(Object|string|number)} time
@@ -34,7 +33,9 @@ export function parseTime(time, cFormat) {
   const time_str = format.replace(/{(y|m|d|h|i|s|a)+}/g, (result, key) => {
     let value = formatObj[key]
     // Note: getDay() returns 0 on Sunday
-    if (key === 'a') { return ['日', '一', '二', '三', '四', '五', '六'][value ] }
+    if (key === 'a') {
+      return ['日', '一', '二', '三', '四', '五', '六'][value]
+    }
     if (result.length > 0 && value < 10) {
       value = '0' + value
     }
@@ -97,11 +98,41 @@ export function param2Obj(url) {
   }
   return JSON.parse(
     '{"' +
-      decodeURIComponent(search)
-        .replace(/"/g, '\\"')
-        .replace(/&/g, '","')
-        .replace(/=/g, '":"')
-        .replace(/\+/g, ' ') +
-      '"}'
+    decodeURIComponent(search)
+    .replace(/"/g, '\\"')
+    .replace(/&/g, '","')
+    .replace(/=/g, '":"')
+    .replace(/\+/g, ' ') +
+    '"}'
   )
+}
+
+
+export function allStatus() {
+  let data = [{
+      label: "上线",
+      value: "IN_FORCE"
+    },
+    {
+      label: "下线",
+      value: "OFFLINE"
+    }
+  ]
+
+  return data;
+}
+
+//排序
+/**
+ * 
+ * @param {*要排序的数组} array 
+ * @param {*排序的字段} key 
+ */
+export function sortKey(array, key) {
+  return array.sort(function (a, b) {
+    var x = a[key];
+    var y = b[key];
+    return ((x < y) ? -1 : (x > y) ? 1 : 0)
+  })
+  
 }

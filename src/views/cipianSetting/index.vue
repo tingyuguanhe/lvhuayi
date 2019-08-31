@@ -13,6 +13,7 @@
         </el-form-item>
         <el-form-item label="管理员">
           <el-input size="small" clearable v-model="ruleForm.title" autocomplete="off"></el-input>
+        </el-form-item>
         <el-form-item label="创建时间">
           <el-date-picker
             size="small"

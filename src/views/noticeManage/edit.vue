@@ -100,14 +100,11 @@
       </el-col>
       <el-col :span="8">
         <div class="grid-content bg-purple">
-          
           <div class="pre_view_wrap">
             <h4>预览区</h4>
             <div v-if="activeName == 'en'" class="pre_view" v-html="ruleForm.contentEng"></div>
-              <div v-else class="pre_view" v-html="ruleForm.content"></div>
-             
+            <div v-else class="pre_view" v-html="ruleForm.content"></div>
           </div>
-          
         </div>
       </el-col>
     </el-row>
@@ -124,15 +121,13 @@ export default {
     return {
       activeName: "en",
       ruleForm: {
-        status: "OFFLINE",
-        weight: 0,
         title: "",
         titleEng: "",
         image: "",
         imageEng: "",
         content: "",
         contentEng: "",
-        date: "",
+        date: [],
         startTime: "",
         endTime: ""
       },
@@ -161,20 +156,40 @@ export default {
       qiniuaddr: "", //图片上传的地址
       dialogVisible: false,
       dialogImageUrl: "",
-
       domain: "https://up-z1.qiniup.com", // 七牛云的上传地址（华南区）
-      qiniuaddr: "http://xxxx.com" // 七牛云的图片外链地址
+      qiniuaddr: "http://xxxx.com", // 七牛云的图片外链地址
+      id: ""
     };
   },
   mounted() {
     this.qiniuaddr = this.QiniuInfos.baseUrl;
+    this.id = this.$route.params.id;
+    if (this.id) {
+      this.getDetail();
+    }
   },
   methods: {
     onEditorReady(editor) {},
     handleClick(name) {
       this.activeName = name;
     },
-
+    async getDetail() {
+      let res = await NoticeApi.getItemDetail(this.id);
+      if (res.code == 200) {
+        console.log(res);
+        let Data = res.data;
+        this.ruleForm.title = Data.title;
+        this.ruleForm.titleEng = Data.titleEng;
+        this.ruleForm.image = Data.image;
+        this.ruleForm.imageEng = Data.imageEng;
+        this.ruleForm.content = Data.content;
+        this.ruleForm.contentEng = Data.contentEng;
+        this.ruleForm.date.push(Data.startTime);
+        this.ruleForm.date.push(Data.endTime);
+        this.ruleForm.startTime = Data.startTime;
+        this.ruleForm.endTime = Data.endTime;
+      }
+    },
     beforeUpload(file) {
       this.beforeAvatarUpload(file);
     },
@@ -215,9 +230,9 @@ export default {
         if (valid) {
           this.ruleForm.startTime = this.ruleForm.date[0];
           this.ruleForm.endTime = this.ruleForm.date[1];
-   
+
           let res = await NoticeApi.createNotice(this.ruleForm);
-          
+
           if (res.code == 200) {
             this.$message.success("创建成功");
             this.$router.go(-1);
