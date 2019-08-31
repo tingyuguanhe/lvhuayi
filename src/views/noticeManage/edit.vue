@@ -33,11 +33,8 @@
         <el-input v-model="ruleForm.title"></el-input>
       </el-form-item>
       <el-form-item label="内容编辑" prop="content">
-        <quill-editor v-model="ruleForm.content"
-                        ref="myQuillEditor"
-                        class="editer"
-                        :options="editorOption" @ready="onEditorReady($event)">
-          </quill-editor>
+        <Tinymce ref="editor" v-model="ruleForm.contentEng" :height="400" />
+       
       </el-form-item>
       <el-form-item>
         <el-button type="warning">预览</el-button>
@@ -76,7 +73,7 @@
       </el-form-item>
       <el-form-item label="内容编辑" prop="name">
         <div class="editor-container">
-          <UE :defaultMsg=defaultMsg  v-model="ruleForm.contentEng" :config=config ref="ue"></UE>
+          <Tinymce ref="editor" v-model="ruleForm.contentEng" :height="400" />
         </div>
 
       </el-form-item>
@@ -86,11 +83,11 @@
 
 <script>
 import * as NoticeApi from '@/api/notice'
+import Tinymce from '@/components/Tinymce'
 
-import UE from '../../components/ue.vue';
 
 export default {
-  components:{UE},
+  components:{Tinymce},
   data() {
     return {
       activeName: "en",
