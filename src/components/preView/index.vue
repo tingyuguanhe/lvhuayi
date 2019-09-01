@@ -1,6 +1,6 @@
 <template>
   <el-dialog
-    title="查看公告"
+    :title="`查看${title}`"
     :visible.sync="visible"
     @close="$emit('update:dialogShow', false)"
     width="70%"
@@ -9,7 +9,7 @@
       <el-col :span="12">
         <div class="grid-content bg-purple">
           <div class="pre_view_wrap">
-            <h4>英文公告</h4>
+            <h4>英文{{title}}</h4>
             <div class="pre_view">
               <p v-html="currentRow.contentEng"></p>
             </div>
@@ -19,7 +19,7 @@
       <el-col :span="12">
         <div class="grid-content bg-purple-light">
           <div class="pre_view_wrap">
-            <h4>中文公告</h4>
+            <h4>中文{{title}}</h4>
             <div class="pre_view">
               <p v-html="currentRow.content"></p>
             </div>
@@ -33,7 +33,20 @@
 
 <script>
 export default {
-  props: ["dialogShow", "currentRow"],
+  props:{
+      dialogShow:{
+          type: Boolean,
+          default: false
+      },
+      currentRow: {
+          type: Object,
+          default: ()=>{}
+      },
+      title:{
+          type:String,
+          default:""
+      }
+  },
   data() {
     return {
       visible: false

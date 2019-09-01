@@ -1,28 +1,27 @@
 import request from '@/utils/request'
 
   //创建
-  export function createNotice(data) {
+  export function createGuid(data) {
     return request({
-      url: '/api/lvhuayi/admin/notices/create',
+      url: '/api/lvhuayi/admin/guides/create',
       method: 'post',
       data
     })
   }
 
   //列表
-  export function getNoticeList(data) {
+  export function getGuidesList(data) {
     return request({
-      url: '/api/lvhuayi/admin/notices/list',
+      url: '/api/lvhuayi/admin/guides/list',
       method: 'post',
       data
     })
   }
   
-
   //更新状态（上线、下线）
   export function updateStatus(id, data) {
     return request({
-      url: `/api/lvhuayi/admin/notices/${id}/updateStatus`,
+      url: `/api/lvhuayi/admin/guides/${id}/updateStatus`,
       method: 'post',
       data
     })
@@ -31,7 +30,7 @@ import request from '@/utils/request'
   //修改权重
   export function updateWeight(id, data) {
     return request({
-      url: `/api/lvhuayi/admin/notices/${id}/updateWeight`,
+      url: `/api/lvhuayi/admin/guides/${id}/updateWeight`,
       method: 'post',
       data
     })
@@ -39,7 +38,7 @@ import request from '@/utils/request'
   //删除
   export function delItem(id) {
     return request({
-      url: `/api/lvhuayi/admin/notices/${id}`,
+      url: `/api/lvhuayi/admin/guides/${id}`,
       method: 'delete'
     })
   }
@@ -47,18 +46,21 @@ import request from '@/utils/request'
   //详情
   export function getItemDetail(id) {
     return request({
-      url: `/api/lvhuayi/admin/notices/${id}`,
+      url: `/api/lvhuayi/guides/${id}`,
       method: 'get'
     })
   }
 
 
  //修改信息
-  export function updateNotice(data) {
+  export function updateGuide(data) {
     return request({
-      url: '/api/lvhuayi/admin/notices/update',
+      url: '/api/lvhuayi/admin/guides/update',
       method: 'post',
       data
     })
   }
  
+
+
+  

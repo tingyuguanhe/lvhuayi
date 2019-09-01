@@ -97,6 +97,13 @@ export const constantRouterMap = [
       },
       {
         path: 'edit',
+        name: 'addGuide',
+        hidden: true,
+        component: () => import('@/views/guideSetting/edit'),
+        meta: { title: '新建指引', icon: 'form' }
+      },
+      {
+        path: 'edit/:id',
         name: 'editGuide',
         hidden: true,
         component: () => import('@/views/guideSetting/edit'),
@@ -137,6 +144,13 @@ export const constantRouterMap = [
       },
       {
         path: 'edit',
+        name: 'createNews',
+        hidden: true,
+        component: () => import('@/views/newsPublish/edit'),
+        meta: { title: '新建新闻', icon: 'form' }
+      },
+      {
+        path: 'edit/:id/:type',
         name: 'editNews',
         hidden: true,
         component: () => import('@/views/newsPublish/edit'),

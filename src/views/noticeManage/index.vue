@@ -31,7 +31,7 @@
             ></el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="活动时间">
+        <el-form-item label="创建时间">
           <el-date-picker
             size="small"
             v-model="ruleForm.date"
@@ -64,7 +64,15 @@
         </el-table-column>
         <el-table-column prop="title" label="公告标题"></el-table-column>
         <el-table-column label="生效时间" width="120">
-          <template slot-scope="scope">{{scope.row.updateTime | formatFullDate}}</template>
+          <template
+            slot-scope="scope"
+          >{{scope.row.startTime | formatFullDate}} 至 {{scope.row.endTime | formatFullDate}}</template>
+        </el-table-column>
+        <el-table-column label="客户端展示" width="120">
+          <template slot-scope="scope">
+            <span v-if="scope.row.showInClient">是</span>
+            <span v-else>否</span>
+          </template>
         </el-table-column>
         <el-table-column prop="configureUser.nickname" label="管理员" width="120"></el-table-column>
         <el-table-column fixed="right" label="操作" width="180">
@@ -102,8 +110,8 @@
         :total="pagination.total"
       ></el-pagination>
     </div>
-    //查看组件
-    <pre-view :dialogShow.sync="dialogShow" :currentRow="currentRow"></pre-view>
+    <!-- 查看组件 -->
+    <pre-view :dialogShow.sync="dialogShow" :title="'公告'" :currentRow="currentRow"></pre-view>
   </div>
 </template>    
 
@@ -151,7 +159,6 @@ export default {
     }
   },
   methods: {
-    
     handleSizeChange(val) {
       console.log(`每页 ${val} 条`);
     },
@@ -235,6 +242,3 @@ export default {
 };
 </script>
 
-
-<style lang="scss" scoped>
-</style>
