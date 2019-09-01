@@ -148,6 +148,14 @@ export default {
       currentRow: {}
     };
   },
+  watch: {
+    "ruleForm.date": function(newVal, oldVal) {
+        if(!newVal || newVal.length == 0){
+            this.ruleForm.startTime = "";
+            this.ruleForm.endTime = "";
+        }
+    }
+  },
   async mounted() {
     this.getListData();
     let res = await this.$store.dispatch("user/getAllUesrsData");

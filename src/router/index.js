@@ -197,7 +197,14 @@ export const constantRouterMap = [
         meta: { title: '活动管理', icon: 'form' }
       },
       {
-        path: 'edit',
+        path: 'create',
+        name: 'createActivity',
+        hidden: true,
+        component: () => import('@/views/activityManage/edit'),
+        meta: { title: '新建活动', icon: 'form' }
+      },
+      {
+        path: 'edit/:id',
         name: 'editActivity',
         hidden: true,
         component: () => import('@/views/activityManage/edit'),

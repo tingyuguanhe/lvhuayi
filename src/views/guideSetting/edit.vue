@@ -7,7 +7,7 @@
             <el-tab-pane label="英文指引" name="en"></el-tab-pane>
             <el-tab-pane label="中文指引" name="zh-CN"></el-tab-pane>
           </el-tabs>
-          <!-- 英文公告 -->
+          <!-- 英文指引 -->
           <el-form
             key="en"
             :model="ruleForm"

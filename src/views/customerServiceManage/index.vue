@@ -34,11 +34,11 @@
       <el-button size="small" type="primary" @click="qsTypeManage()">问题类型管理</el-button>
 
       <el-table :data="tableData" border v-loading="loading" style="width: 100%">
-        <el-table-column fixed prop="id" label="公告id" width="70"></el-table-column>
+        <el-table-column fixed prop="id" label="问题类型id" width="70"></el-table-column>
         <el-table-column label="创建时间">
           <template slot-scope="scope">{{scope.row.createTime | formatFullDate}}</template>
         </el-table-column>
-        <el-table-column label="公告状态" width="120">
+        <el-table-column label="问题类型状态" width="120">
           <template slot-scope="scope">{{scope.row.status | dataStatus}}</template>
         </el-table-column>
         <el-table-column prop="weight" label="权重" width="120">
@@ -46,7 +46,7 @@
             <el-input v-model="scope.row.weight" @change="changeWeight(scope.row)"></el-input>
           </template>
         </el-table-column>
-        <el-table-column prop="title" label="公告标题"></el-table-column>
+        <el-table-column prop="title" label="问题类型标题"></el-table-column>
         
         <el-table-column prop="configureUser.nickname" label="管理员" width="120"></el-table-column>
         <el-table-column fixed="right" label="操作" width="180">
@@ -123,6 +123,14 @@ export default {
     this.getQsTypeListOption();
     this.getListData();
     
+  },
+  watch: {
+    "ruleForm.date": function(newVal, oldVal) {
+        if(!newVal || newVal.length == 0){
+            this.ruleForm.startTime = "";
+            this.ruleForm.endTime = "";
+        }
+    }
   },
   methods: {
     async getQsTypeListOption() {

@@ -141,7 +141,8 @@
         <el-form-item>
           <div class="dialog-footer">
             <el-button @click="dialogFormVisible = false">取 消</el-button>
-            <el-button type="primary" @click="confirmCreateReprint('form')">确 定</el-button>
+            <el-button v-if="createBtnShow" type="primary" @click="confirmCreateReprint('form')">确 定</el-button>
+            <el-button v-else type="primary" @click="dialogFormVisible = false">确 定</el-button>
           </div>
         </el-form-item>
       </el-form>
@@ -205,8 +206,17 @@ export default {
         date: [{ required: true, message: "请选择生效时间", trigger: "blur" }]
       },
       reprintId: "",
-      type: ""
+      type: "",
+      createBtnShow: true
     };
+  },
+  watch: {
+    "ruleForm.date": function(newVal, oldVal) {
+        if(!newVal || newVal.length == 0){
+            this.ruleForm.startTime = "";
+            this.ruleForm.endTime = "";
+        }
+    }
   },
   async mounted() {
     this.getListData();
@@ -244,8 +254,19 @@ export default {
       }
     },
     handleClickView(row) {
-      this.dialogShow = true;
-      this.currentRow = row;
+      if (row.type == "CONFIGURE") {
+        this.createBtnShow = true;
+        this.dialogShow = true;
+        this.currentRow = row;
+      } else {
+        this.createBtnShow = false;
+        this.dialogFormVisible = true;
+        this.form.title = row.title;
+        this.form.titleEng = row.titleEng;
+        this.form.entryLink = row.entryLink;
+        this.form.date.push(row.startTime);
+        this.form.date.push(row.endTime);
+      }
     },
     handleClickEdit(row) {
       if (row.type == "CONFIGURE") {
@@ -253,20 +274,19 @@ export default {
           name: "editNews",
           params: { id: row.id, type: row.tye }
         });
-      }else{
-          this.dialogFormVisible = true;
-          this.type = row.type;
-          this.form.title = row.title;
-          this.form.titleEng = row.titleEng;
-          this.form.entryLink = row.entryLink;
-          this.form.date.push(row.startTime);
-          this.form.date.push(row.endTime);
-          this.form.startTime = row.startTime;
-          this.form.endTime = row.endTime;
-          this.$set(this.form, "id", row.id);
-          this.$set(this.form, "type", row.type);
-          this.$set(this.form, "weight", row.weight);
-
+      } else {
+        this.dialogFormVisible = true;
+        this.type = row.type;
+        this.form.title = row.title;
+        this.form.titleEng = row.titleEng;
+        this.form.entryLink = row.entryLink;
+        this.form.date.push(row.startTime);
+        this.form.date.push(row.endTime);
+        this.form.startTime = row.startTime;
+        this.form.endTime = row.endTime;
+        this.$set(this.form, "id", row.id);
+        this.$set(this.form, "type", row.type);
+        this.$set(this.form, "weight", row.weight);
       }
     },
     async handleClickUpdateStatus(row, type) {
