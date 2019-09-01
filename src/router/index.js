@@ -251,7 +251,14 @@ export const constantRouterMap = [
         meta: { title: '瓷片配置', icon: 'form' }
       },
       {
-        path: 'edit',
+        path: 'create',
+        name: 'createCipian',
+        hidden: true,
+        component: () => import('@/views/cipianSetting/edit'),
+        meta: { title: '新建瓷片', icon: 'form' }
+      },
+      {
+        path: 'edit/:id',
         name: 'editCipian',
         hidden: true,
         component: () => import('@/views/cipianSetting/edit'),

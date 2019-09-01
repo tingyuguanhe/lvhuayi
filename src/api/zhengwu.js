@@ -17,7 +17,7 @@ export function createGovermentAffairss(data) {
   })
 }
 
-export function updateGovermentAffairss(data) {
+export function updateGovernmentAffairss(data) {
   return request({
     url: '/api/lvhuayi/admin/governmentAffairss/update',
     method: 'post',
@@ -25,16 +25,16 @@ export function updateGovermentAffairss(data) {
   })
 }
 
-export function delGovermentAffairss(id) {
+export function delItem(id) {
   return request({
     url: '/api/lvhuayi/admin/governmentAffairss/' + id,
     method: 'delete'
   })
 }
 
-export function updateWeight(data, id) {
+export function updateWeight(id,data) {
   return request({
-    url: '/api/lvhuayi/admin/governmentAffairss/' + id + '/updateWeight',
+    url: `/api/lvhuayi/admin/governmentAffairss/${id}/updateWeight`,
     method: 'post',
     data
   })
@@ -42,9 +42,9 @@ export function updateWeight(data, id) {
 
 //更新状态（上线、下线）
 export function updateStatus(id, data) {
-    return request({
-      url: '',
-      method: 'post',
-      data
-    })
+  return request({
+    url: `/api/lvhuayi/admin/governmentAffairss/${id}/updateStatus`,
+    method: 'post',
+    data
+  })
 }
