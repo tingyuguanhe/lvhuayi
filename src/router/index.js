@@ -170,7 +170,14 @@ export const constantRouterMap = [
         meta: { title: '视频管理', icon: 'form' }
       },
       {
-        path: 'edit',
+        path: 'create',
+        name: 'createVideo',
+        hidden: true,
+        component: () => import('@/views/videoManage/edit'),
+        meta: { title: '新建视频', icon: 'form' }
+      },
+      {
+        path: 'edit/:id',
         name: 'editVideo',
         hidden: true,
         component: () => import('@/views/videoManage/edit'),
@@ -182,6 +189,13 @@ export const constantRouterMap = [
         hidden: true,
         component: () => import('@/views/videoManage/uploadVideo'),
         meta: { title: '上传视频', icon: 'form' }
+      },
+      {
+        path: 'uploadVideo/:id',
+        name: 'manageUploadVideo',
+        hidden: true,
+        component: () => import('@/views/videoManage/uploadVideo'),
+        meta: { title: '管理视频', icon: 'form' }
       }
     ]
   },

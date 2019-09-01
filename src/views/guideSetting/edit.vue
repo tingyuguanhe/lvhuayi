@@ -170,7 +170,7 @@ export default {
     }
   },
   methods: {
-    onEditorReady(editor) {},
+    
     handleClick(name) {
       this.activeName = name;
     },

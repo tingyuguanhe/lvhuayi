@@ -130,8 +130,8 @@ export function allStatus() {
  */
 export function sortKey(array, key) {
   return array.sort(function (a, b) {
-    var x = a[key];
-    var y = b[key];
+    var x = parseInt(a[key]);
+    var y = parseInt(b[key]);
     return ((x < y) ? -1 : (x > y) ? 1 : 0)
   })
   

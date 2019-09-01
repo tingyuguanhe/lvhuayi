@@ -186,6 +186,7 @@ export default {
       let res = await getGuidesList(reqData);
       if (res.code == 200) {
         this.tableData = res.data.results;
+        this.pagination.total = res.data.total;
         this.loading = false;
         sortKey(this.tableData, "weight");
       } else {

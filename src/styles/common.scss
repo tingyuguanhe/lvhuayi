@@ -55,7 +55,8 @@
   padding: 15px;
   margin: 0;
 }
-.pre_view_wrap{
+
+.pre_view_wrap {
   width: 375px;
   height: 540px;
   margin: 0 auto;
@@ -79,6 +80,27 @@
   border-bottom: 1px solid #e2e2e2;
 }
 
-.dialog-footer{
+.dialog-footer {
   text-align: right;
+}
+
+.pic_tip {
+  color: #b5b5b5;
+}
+
+label.name {
+  font-size: 15px;
+  padding-left: 20px;
+  margin-bottom: 15px;
+  display: inline-block;
+}
+.mul_box{
+  display: flex;
+}
+.mul_box .el-form-item{
+  margin-right: 20px;
+}
+
+.footer_btn{
+  padding-left: 100px;
 }
