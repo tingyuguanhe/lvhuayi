@@ -70,10 +70,18 @@
         <el-table-column fixed="right" label="操作" width="180">
           <template slot-scope="scope">
             <el-button @click="handleClickView(scope.row)" type="text" size="small">查看</el-button>
-            <el-button type="text" size="small" @click="handleClickEdit(scope.row)">编辑</el-button>
-            <el-button type="text" size="small" @click="handleClickUpdateStatus(scope.row)">
-              <span v-if="scope.row.status == 'OFFLINE'">上线</span>
-              <span v-else class="red">下线</span>
+            <el-button
+              type="text"
+              size="small"
+              v-if="scope.row.status == 'OFFLINE'"
+              @click="handleClickEdit(scope.row)"
+            >编辑</el-button>
+            <el-button type="text" size="small">
+              <span
+                v-if="scope.row.status == 'OFFLINE'"
+                @click="handleClickUpdateStatus(scope.row, 'IN_FORCE')"
+              >上线</span>
+              <span v-else class="red" @click="handleClickUpdateStatus(scope.row, 'OFFLINE')">下线</span>
             </el-button>
             <el-button
               type="text"
@@ -102,7 +110,7 @@
             <div class="pre_view_wrap">
               <h4>英文公告</h4>
               <div class="pre_view">
-                <p>{{currentRow.contentEng}}</p>
+                <p v-html="currentRow.contentEng"></p>
               </div>
             </div>
           </div>
@@ -112,7 +120,7 @@
             <div class="pre_view_wrap">
               <h4>中文公告</h4>
               <div class="pre_view">
-                <p>{{currentRow.content}}</p>
+                <p  v-html="currentRow.content"></p>
               </div>
             </div>
           </div>
@@ -197,33 +205,31 @@ export default {
     handleClickEdit(row) {
       this.$router.push({ name: "editNotice", params: { id: row.id } });
     },
-    async handleClickUpdateStatus(row) {
+    async handleClickUpdateStatus(row, type) {
       console.log(row);
       let reqData;
       let tip;
-      if (row.status == "OFFLINE") {
-        //下线
-        reqData = '"IN_FORCE"';
-        tip = "上线";
-      } else {
+      if (type == "OFFLINE") {
         tip = "下线";
-        reqData = '"OFFLINE"';
+      } else {
+        tip = "上线";
       }
-      let res = await updateStatus(row.id, reqData);
+      let res = await updateStatus(row.id, `"${type}"`);
       if (res.code == 200) {
         this.$message.success(tip + "成功");
-        row.status = "IN_FORCE";
+        row.status = type
       }
     },
     async handleClickDelete(row, index) {
       this.$confirm("确认删除?", "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
-        type: "warning",
-        center: true
-      }).then(() => {
-        this.confirmDel(row, index);
-      });
+        type: "warning"
+      })
+        .then(() => {
+          this.confirmDel(row, index);
+        })
+        .catch(() => {});
     },
     async confirmDel(row, index) {
       let res = await delItem(row.id);

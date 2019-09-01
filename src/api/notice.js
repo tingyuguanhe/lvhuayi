@@ -60,4 +60,13 @@ export function getList(data) {
     })
   }
 
+
+ //修改信息
+  export function updateNotice(data) {
+    return request({
+      url: '/api/lvhuayi/admin/notices/update',
+      method: 'post',
+      data
+    })
+  }
  

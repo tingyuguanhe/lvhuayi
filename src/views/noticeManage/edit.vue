@@ -188,6 +188,9 @@ export default {
         this.ruleForm.date.push(Data.endTime);
         this.ruleForm.startTime = Data.startTime;
         this.ruleForm.endTime = Data.endTime;
+        this.$set(this.ruleForm, "id", Data.id);
+        this.$set(this.ruleForm, "status", Data.status);
+        this.$set(this.ruleForm, "weight", Data.weight);
       }
     },
     beforeUpload(file) {
@@ -231,11 +234,23 @@ export default {
           this.ruleForm.startTime = this.ruleForm.date[0];
           this.ruleForm.endTime = this.ruleForm.date[1];
 
-          let res = await NoticeApi.createNotice(this.ruleForm);
-
-          if (res.code == 200) {
-            this.$message.success("创建成功");
-            this.$router.go(-1);
+          if (this.id) {
+            //修改
+            let res = await NoticeApi.updateNotice(this.ruleForm);
+            if (res.code == 200) {
+              this.$message.success("修改成功");
+              this.$router.go(-1);
+            } else {
+              this.$message.error("修改失败，请重试");
+            }
+          } else {
+            let res = await NoticeApi.createNotice(this.ruleForm);
+            if (res.code == 200) {
+              this.$message.success("创建成功");
+              this.$router.go(-1);
+            } else {
+              this.$message.error("创建失败，请重试");
+            }
           }
         } else {
           this.$message.error("请检查中英文是否填写完整");
