@@ -102,36 +102,14 @@
         :total="pagination.total"
       ></el-pagination>
     </div>
-
-    <el-dialog title="查看公告" :visible.sync="dialogVisible" width="70%">
-      <el-row>
-        <el-col :span="12">
-          <div class="grid-content bg-purple">
-            <div class="pre_view_wrap">
-              <h4>英文公告</h4>
-              <div class="pre_view">
-                <p v-html="currentRow.contentEng"></p>
-              </div>
-            </div>
-          </div>
-        </el-col>
-        <el-col :span="12">
-          <div class="grid-content bg-purple-light">
-            <div class="pre_view_wrap">
-              <h4>中文公告</h4>
-              <div class="pre_view">
-                <p  v-html="currentRow.content"></p>
-              </div>
-            </div>
-          </div>
-        </el-col>
-      </el-row>
-    </el-dialog>
+    //查看组件
+    <pre-view :dialogShow.sync="dialogShow" :currentRow="currentRow"></pre-view>
   </div>
 </template>    
 
 
 <script>
+import PreView from "@/components/preView";
 import {
   getNoticeList,
   updateStatus,
@@ -140,9 +118,10 @@ import {
 } from "@/api/notice";
 import { allStatus, sortKey } from "@/utils";
 export default {
+  components: { PreView },
   data() {
     return {
-      dialogVisible: false,
+      dialogShow: false,
       ruleForm: {
         title: "",
         status: null,
@@ -172,6 +151,7 @@ export default {
     }
   },
   methods: {
+    
     handleSizeChange(val) {
       console.log(`每页 ${val} 条`);
     },
@@ -199,7 +179,7 @@ export default {
       }
     },
     handleClickView(row) {
-      this.dialogVisible = true;
+      this.dialogShow = true;
       this.currentRow = row;
     },
     handleClickEdit(row) {
@@ -217,7 +197,7 @@ export default {
       let res = await updateStatus(row.id, `"${type}"`);
       if (res.code == 200) {
         this.$message.success(tip + "成功");
-        row.status = type
+        row.status = type;
       }
     },
     async handleClickDelete(row, index) {
